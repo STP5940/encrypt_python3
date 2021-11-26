@@ -2,11 +2,11 @@ import os
 from wcmatch import glob
 from cryptography.fernet import Fernet
 
-def decryptfile(_filename, _encMessage, _key):
+def decryptfile(_filename, _encData, _key):
     
     try:
         
-        decMessage = fernet.decrypt(_encMessage)
+        decMessage = fernet.decrypt(_encData)
 
         fencode = open(_filename,"wb")
 
@@ -19,7 +19,6 @@ def decryptfile(_filename, _encMessage, _key):
 
     except Exception as e:
         print(e)
-        # print("Private key invalid")
 
 if __name__ == "__main__":
 
@@ -35,7 +34,6 @@ if __name__ == "__main__":
 
     datatoarray = readdata.split("|")
     datatoarray.remove('')
-    # print(datatoarray)
     f.close()
 
     for fileencodes in datatoarray:
@@ -48,7 +46,7 @@ if __name__ == "__main__":
             f.close()
 
             # we will be encryting the below string.
-            encMessage = bytes(readdata, 'utf-8')
+            encData = bytes(readdata, 'utf-8')
 
             # decrypt the encrypted string with the
             # Fernet instance of the key,
@@ -56,7 +54,7 @@ if __name__ == "__main__":
             # encoded byte string is returned by decrypt method,
             # so decode it to string with decode methods
 
-            decryptfile(fileencodes, encMessage, private_key)
+            decryptfile(fileencodes, encData, private_key)
         except Exception as e:
             print(e)
 

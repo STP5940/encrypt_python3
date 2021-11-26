@@ -3,16 +3,16 @@ from wcmatch import glob
 from cryptography.fernet import Fernet
 
 
-def encryptfile(_filename, _encMessage, _key):
+def encryptfile(_filename, _decData, _key):
 
     try:
         fernet = Fernet(_key)
 
-        decMessage = fernet.decrypt(_encMessage)
+        encMessage = fernet.encrypt(_decData)
 
         fencode = open(_filename, "w")
         encoding = 'utf-8'
-        fencode.write(str(_encMessage, encoding))
+        fencode.write(str(encMessage, encoding))
         fencode.close()
 
         print(_filename+" >> encrypt success")
@@ -21,7 +21,6 @@ def encryptfile(_filename, _encMessage, _key):
 
     except Exception as e:
         print(e)
-        # print("Private key invalid")
 
 if __name__ == "__main__":
 
@@ -53,8 +52,6 @@ if __name__ == "__main__":
     # encoded byte string is returned by decrypt method,
     # so decode it to string with decode methods
 
-    # print(glob.glob('**/*.png', recursive=True))
-
     _rootpath = "D:/encrypt_python3/.list_file.txt"
 
     f = open(_rootpath, "r", encoding="utf-8")
@@ -62,7 +59,6 @@ if __name__ == "__main__":
 
     datatoarray = readdata.split("|")
     datatoarray.remove('')
-    # print(datatoarray)
     f.close()
 
     for fileencodes in datatoarray:
@@ -75,13 +71,10 @@ if __name__ == "__main__":
             readdata = f.read()
             f.close()
 
-            message = readdata
-
-            encMessage = fernet.encrypt(message)
+            decData = readdata
 
             print(fileencodes)
-
-            encryptfile(fileencodes, encMessage, key)
+            encryptfile(fileencodes, decData, key)
         except Exception as e:
             print(e)
 
